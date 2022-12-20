@@ -13,7 +13,9 @@ import java.util.List;
 @Repository
 public interface VendaRepository extends JpaRepository<Venda, Long> {
     @Query(nativeQuery = true)
-    VendaCount findVendaCountByPeriodo(Date dataIni, Date dataFim)  ;
+    default VendaCount findVendaCountByPeriodo(Date dataIni, Date dataFim) {
+        return null;
+    }
 
     //@Query(value = "select vendedo_id,vendedor_nome,data_venda,sum(valor),count(*)from venda group by vendedo_id,vendedor_nome,data_venda",nativeQuery = true)
     //List<VendaCount> listaCount();

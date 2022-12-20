@@ -15,9 +15,22 @@ import java.util.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@NamedNativeQuery(name =  "VendaCount.findVendaCountByPeriodo",
+        query = "select vendedo_id,vendedor_nome,data_venda,sum(valor)as soma,count(*) as total from venda " +
+                "where data_venda >= :dataIni and data_venda <= :dataFim " +
+                "group by vendedo_id,vendedor_nome,data_venda",
+        resultSetMapping = "Mapping.VendaCount")
 
+@SqlResultSetMapping(name = "Mapping.VendaCount",
+        classes = @ConstructorResult(targetClass = VendaCount.class,
+                columns = {@ColumnResult(name = "vendedo_id"),
+                        @ColumnResult(name = "vendedor_nome"),
+                        @ColumnResult(name = "data_venda"),
+                        @ColumnResult(name = "soma"),
+                        @ColumnResult(name = "total")}))
 
 public class Venda implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -30,16 +43,5 @@ public class Venda implements Serializable {
     @Column(name = "vendedorNome", nullable = false)
     private String vendedorNome;
 
-    @NamedNativeQuery(name = "VendaCount.findVendaCountByPeriodo",
-                      query = "select vendedo_id,vendedor_nome,data_venda,sum(valor)as soma,count(*) as toal from venda " +
-                              "group by vendedo_id,vendedor_nome,data_venda where data_venda >= :dataIni and data_venda<= :dataFim",
-                      resultSetMapping = "Mapping.VendaCount")
 
-    @SqlResultSetMapping(Name = "Mapping.VendaCount",
-            classes = @ConstructorResult(targetClass = VendaCount.class,
-            columns = {@ColumnResult(name = "vendedo_id"),
-                    @ColumnResult(name = "vendedor_nome"),
-                    @ColumnResult(name = "data_venda"),
-                    @ColumnResult(name = "soma"),
-                    @ColumnResult(name = "toal")}))
 }

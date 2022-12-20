@@ -22,6 +22,6 @@ public class VendaService {
     //@GetMapping
     //@ResponseStatus(HttpStatus.OK)
     public List<VendaCount> listaCount(){
-        return vendaRepository.listaCount();
+        return vendaRepository.VendaCount();
     }
 }
